@@ -18,6 +18,14 @@ return [
         'passwords' => 'users',
     ],
 
+    'sanctum' => [
+        'stateful' => true,
+        'providers' => [
+            'Users' => [
+                'model' => App\Models\users::class,
+            ],
+        ],
+    ],
     /*
     |--------------------------------------------------------------------------
     | Authentication Guards
@@ -62,7 +70,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => App\Models\User::class,
+            'model' => App\Models\users::class,
         ],
 
         // 'users' => [
