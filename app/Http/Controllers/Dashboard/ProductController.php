@@ -132,4 +132,13 @@ class ProductController extends Controller
             'data' => $product
         ]);
     }
+
+    public function index()
+    {
+        $products = products::all();
+
+        return response()->json([
+            'success' => true, 'message' => 'List data products', 'data' => $products
+        ]);
+    }
 }

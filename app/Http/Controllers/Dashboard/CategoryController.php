@@ -9,11 +9,7 @@ use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends Controller
 {
-    public function index()
-    {
-        $categories = categories::all();
-        return response()->json($categories);
-    }
+
 
     public function create(Request $request)
     {
@@ -107,5 +103,11 @@ class CategoryController extends Controller
             'message' => 'Category retrieved successfully',
             'data' => $category
         ]);
+    }
+
+    public function index()
+    {
+        $categories = categories::all();
+        return response()->json(['success' => true, 'message' => 'List data categories', 'data' => $categories]);
     }
 }

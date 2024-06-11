@@ -36,6 +36,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/products/{id}', 'update')->name('products.update');
         Route::delete('/products/{id}', 'delete')->name('products.delete');
         Route::get('/products/{id}', 'show')->name('products.show');
+        Route::get('/products', 'index')->name('products.index');
     });
 
     Route::controller(CategoryController::class)->group(function () {
@@ -43,5 +44,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/categories/{id}', 'update')->name('categories.update');
         Route::delete('/categories/{id}', 'delete')->name('categories.delete');
         Route::get('/categories/{id}', 'show')->name('categories.show');
+        Route::get('/categories', 'index')->name('categories.index');
     });
 });
