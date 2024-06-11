@@ -4,6 +4,9 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\Dashboard\CategoryController;
+use App\Http\Controllers\Dashboard\ProductController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -22,5 +25,23 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/logout', [AuthController::class, 'logout']);
+
+    Route::controller(AuthController::class)->group(function () {
+        Route::get('/logout', 'logout')->name('logout');
+    });
+
+
+    Route::controller(ProductController::class)->group(function () {
+        Route::post('/products', 'create')->name('products.create');
+        Route::post('/products/{id}', 'update')->name('products.update');
+        Route::delete('/products/{id}', 'delete')->name('products.delete');
+        Route::get('/products/{id}', 'show')->name('products.show');
+    });
+
+    Route::controller(CategoryController::class)->group(function () {
+        Route::post('/categories', 'create')->name('categories.create');
+        Route::post('/categories/{id}', 'update')->name('categories.update');
+        Route::delete('/categories/{id}', 'delete')->name('categories.delete');
+        Route::get('/categories/{id}', 'show')->name('categories.show');
+    });
 });
