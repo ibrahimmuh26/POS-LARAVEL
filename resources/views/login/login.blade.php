@@ -51,7 +51,7 @@
                                             <a href="#" class="text-primary float-right">Forgot Password?</a>
                                         </div>
                                     </div>
-                                    <button type="submit" class="btn btn-primary" onclick="login()">Login</button>
+                                    <button type="submit" class="btn btn-primary">Login</button>
                                 </form>
 
 
