@@ -29,8 +29,8 @@ class AuthController extends Controller
                 'data' => $validator->errors()
             ]);
         }
-        $username = users::where('username', $request->username)->first();
-        if ($username) {
+        $email = users::where('email', $request->email)->first();
+        if ($email) {
             return response()->json([
                 'success' => false,
                 'message' => 'Username already exists'
