@@ -167,7 +167,11 @@ return [
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
-        App\Providers\RouteServiceProvider::class,
+        Gloudemans\Shoppingcart\ShoppingcartServiceProvider::class,
+
+
+        App\Providers\RouteServiceProvider::class, Kyslik\ColumnSortable\ColumnSortableServiceProvider::class,
+
     ])->toArray(),
 
     /*
