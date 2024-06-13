@@ -2,110 +2,99 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-use App\Http\Controllers\Controller;
+use App\Models\Category;
 use Illuminate\Http\Request;
-use App\Models\categories;
-use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Redirect;
 
 class CategoryController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     */
     public function index()
     {
-        $categories = categories::all();
-        return response()->json($categories);
-    }
+        $row = (int) request('row', 10);
 
-    public function create(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255|unique:categories',
-            'description' => 'required|string|max:255',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Validation Error',
-                'data' => $validator->errors()
-            ], 422);
+        if ($row < 1 || $row > 100) {
+            abort(400, 'The per-page parameter must be an integer between 1 and 100.');
         }
 
-        $category = categories::create($request->all());
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Category created successfully',
-            'data' => $category
+        return view('categories.index', [
+            'categories' => Category::filter(request(['search']))
+                ->sortable()
+                ->paginate($row)
+                ->appends(request()->query()),
         ]);
     }
 
-    public function update(Request $request, $id)
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255|unique:categories,name,' . $id,
-            'description' => 'required|string|max:255',
-        ]);
+        return view('categories.create');
+    }
 
-        if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Validation Error',
-                'data' => $validator->errors()
-            ], 422);
-        }
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        $rules = [
+            'name' => 'required|unique:categories,name',
+            'slug' => 'required|unique:categories,slug|alpha_dash',
+        ];
 
-        $category = categories::find($id);
+        $validatedData = $request->validate($rules);
 
-        if (!$category) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Category not found'
-            ], 404);
-        }
+        Category::create($validatedData);
 
-        $category->update($request->all());
+        return Redirect::route('categories.index')->with('success', 'Category has been created!');
+    }
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Category updated successfully',
-            'data' => $category
+    /**
+     * Display the specified resource.
+     */
+    public function show(Category $category)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Category $category)
+    {
+        return view('categories.edit', [
+            'category' => $category
         ]);
     }
 
-    public function delete($id)
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, Category $category)
     {
-        $category = categories::find($id);
+        $rules = [
+            'name' => 'required|unique:categories,name,'.$category->id,
+            'slug' => 'required|alpha_dash|unique:categories,slug,'.$category->id,
+        ];
 
-        if (!$category) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Category not found'
-            ], 404);
-        }
+        $validatedData = $request->validate($rules);
 
-        $category->delete();
+        Category::where('slug', $category->slug)->update($validatedData);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Category deleted successfully'
-        ]);
+        return Redirect::route('categories.index')->with('success', 'Category has been updated!');
     }
 
-    public function show($id)
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Category $category)
     {
-        $category = categories::find($id);
+        Category::destroy($category->slug);
 
-        if (!$category) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Category not found'
-            ], 404);
-        }
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Category retrieved successfully',
-            'data' => $category
-        ]);
+        return Redirect::route('categories.index')->with('success', 'Category has been deleted!');
     }
 }

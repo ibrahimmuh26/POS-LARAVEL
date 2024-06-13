@@ -9,13 +9,13 @@ use App\Models\users;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 // use Auth;
+use Illuminate\Support\Facades\Cache;
 
 class AuthController extends Controller
 {
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'username' => 'required|string|max:255',
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6',
@@ -38,7 +38,6 @@ class AuthController extends Controller
         }
 
         $user = users::create([
-            'username' => $request->username,
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password)
@@ -56,10 +55,12 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             $user = Auth::user();
             // $user = users::where('email', $loginUserData['email'])->first();
             $token = $user->createToken('auth_token')->plainTextToken;
+
+            cache::put('auth_token', $token, 60 * 24 * 30);
             return response()->json([
                 'success' => true,
                 'message' => 'User logged in successfully',
