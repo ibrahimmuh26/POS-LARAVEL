@@ -12,11 +12,12 @@ use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Illuminate\Support\Facades\Redirect;
-
+// use Picqer\Barcode\BarcodeGeneratorHTML;
 use PhpOffice\PhpSpreadsheet\Writer\Xls;
 use Picqer\Barcode\BarcodeGeneratorHTML;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
+// use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class ProductController extends Controller
 {
@@ -102,13 +103,10 @@ class ProductController extends Controller
     public function show(Product $product)
     {
         // Barcode Generator
-        $generator = new BarcodeGeneratorHTML();
-
-        $barcode = $generator->getBarcode($product->product_code, $generator::TYPE_CODE_128);
 
         return view('products.show', [
             'product' => $product,
-            'barcode' => $barcode,
+
         ]);
     }
 

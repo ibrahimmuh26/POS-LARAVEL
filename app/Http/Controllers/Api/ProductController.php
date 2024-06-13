@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\products;
+use App\Models\product;
 use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
@@ -13,13 +13,15 @@ class ProductController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|unique:products|max:255',
-            'description' => 'required',
-            'price' => 'required|integer',
             'category_id' => 'required|integer|exists:categories,id',
-            'qty_init' => 'nullable|integer',
-            'qty_in' => 'nullable|integer',
-            'qty_out' => 'nullable|integer',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'supplier_id' => 'required|integer|exists:suppliers,id',
+            'product_code' => 'required|unique:products|max:255',
+            'product_garage' => 'nullable|integer',
+            'product_store' => 'nullable|integer',
+            'buying_date' => 'required|date',
+            'expire_date' => 'required|date',
+            'buying_price' => 'required|integer',
+            'selling_price' => 'required|integer',
         ]);
 
         if ($validator->fails()) {
@@ -39,7 +41,7 @@ class ProductController extends Controller
             $requestData['image'] = $filePath;
         }
 
-        $product = products::create($requestData);
+        $product = Product::create($requestData);
 
         return response()->json([
             'success' => true,
@@ -51,14 +53,16 @@ class ProductController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:products,name,' . $id . ',id|max:255',
-            'description' => 'required',
-            'price' => 'required|integer',
+            'product_name' => 'required|unique:products,product_name,' . $id . ',id|max:255',
             'category_id' => 'required|integer|exists:categories,id',
-            'qty_init' => 'nullable|integer',
-            'qty_in' => 'nullable|integer',
-            'qty_out' => 'nullable|integer',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'supplier_id' => 'required|integer|exists:suppliers,id',
+            'product_code' => 'required|unique:products,product_code,' . $id . ',id|max:255',
+            'product_garage' => 'nullable|integer',
+            'product_store' => 'nullable|integer',
+            'buying_date' => 'required|date',
+            'expire_date' => 'required|date',
+            'buying_price' => 'required|integer',
+            'selling_price' => 'required|integer',
         ]);
 
         if ($validator->fails()) {
@@ -69,7 +73,7 @@ class ProductController extends Controller
             ], 401);
         }
 
-        $product = products::find($id);
+        $product = Product::find($id);
 
         if (!$product) {
             return response()->json([
@@ -98,7 +102,7 @@ class ProductController extends Controller
 
     public function delete($id)
     {
-        $product = products::find($id);
+        $product = Product::find($id);
 
         if (!$product) {
             return response()->json([
@@ -117,7 +121,7 @@ class ProductController extends Controller
 
     public function show($id)
     {
-        $product = products::find($id);
+        $product = Product::find($id);
 
         if (!$product) {
             return response()->json([
@@ -135,7 +139,7 @@ class ProductController extends Controller
 
     public function index()
     {
-        $products = products::all();
+        $products = Product::all();
 
         return response()->json([
             'success' => true, 'message' => 'List data products', 'data' => $products

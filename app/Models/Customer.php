@@ -23,6 +23,7 @@ class Customer extends Model
         'bank_name',
         'bank_branch',
         'city',
+        'points'
     ];
     public $sortable = [
         'name',
