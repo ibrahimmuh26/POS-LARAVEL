@@ -2,9 +2,7 @@
     <div class="card card-block card-stretch card-height mb-5">
         <div class="card-body">
             <div class="d-flex align-items-center mb-3">
-                <div class="profile-img position-relative">
-                    <img src="{{ $user->photo ? asset('storage/profile/'.$user->photo) : asset('assets/images/user/1.png') }}" class="img-fluid rounded avatar-110" alt="profile-image">
-                </div>
+                
                 <div class="ml-3">
                     <h4 class="mb-1">{{  auth()->user()->name }}</h4>
                     <p class="mb-2">UI/UX Designer</p>

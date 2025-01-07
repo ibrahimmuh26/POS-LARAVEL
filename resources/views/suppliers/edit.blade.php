@@ -17,17 +17,7 @@
                             @csrf
                             @method('put')
                             <!-- begin: Input Image -->
-                            <div class="form-group row align-items-center">
-                                <div class="col-md-12">
-                                    <div class="profile-img-edit">
-                                        <div class="crm-profile-img-edit">
-                                            <img class="crm-profile-pic rounded-circle avatar-100" id="image-preview"
-                                                src="{{ $supplier->photo ? asset('storage/suppliers/' . $supplier->photo) : asset('assets/images/user/1.png') }}"
-                                                alt="profile-pic">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                          
 
 
                             <!-- end: Input Image -->

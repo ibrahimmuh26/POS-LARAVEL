@@ -117,8 +117,13 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="city">Supplier City <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control @error('city') is-invalid @enderror"
-                                        id="city" name="city" value="{{ old('city') }}" required>
+                                    <select class="form-control @error('city') is-invalid @enderror" name="city"
+                                        onclick="getCity('city')" id="city" required>
+
+                                        @foreach ($data as $city)
+                                            <option value="{{ $city['city_name'] }}">{{ $city['city_name'] }}</option>
+                                        @endforeach
+                                    </select>
                                     @error('city')
                                         <div class="invalid-feedback">
                                             {{ $message }}
@@ -161,6 +166,30 @@
         </div>
         <!-- Page end  -->
     </div>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 
+    <script>
+        function getCity(id) {
+            console.log(id);
+            $.ajax({
+                url: "https://api.example.com/data?key=0e04521cdc63993d453013d53d7f17d0",
+                method: "GET",
+                dataType: "json",
+                success: function(data) {
+
+                    console.log(data.data);
+                    // $.each(data.data, function(key, value) {
+                    //     // console.log(value.nilai);
+                    //     $(combine).append("<option value='" + value.nilai + "'>" + value.nilai +
+                    //         "</option>");
+
+
+                    // });
+
+                }
+
+            });
+        }
+    </script>
     @include('components.preview-img-form')
 @endsection

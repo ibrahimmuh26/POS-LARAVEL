@@ -25,19 +25,7 @@
                             </div>
                         </div>
 
-                        <div class="row">
-                            <div class="input-group mb-4 col-lg-6">
-                                <div class="custom-file">
-                                    <input type="file" class="custom-file-input @error('photo') is-invalid @enderror" id="image" name="photo" accept="image/*" onchange="previewImage();">
-                                    <label class="custom-file-label" for="photo">Choose file</label>
-                                </div>
-                                @error('photo')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                                @enderror
-                            </div>
-                        </div>
+                       
                         <!-- end: Input Image -->
                         <!-- begin: Input Data -->
                         <div class=" row align-items-center">

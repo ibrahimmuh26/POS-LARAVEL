@@ -79,7 +79,7 @@
                         <tbody class="ligth-body">
                             @forelse ($advance_salaries as $advance_salary)
                                 <tr>
-                                    <td>{{ $advance_salaries->currentPage() * 10 - 10 + $loop->iteration }}</td>
+                                <td>{{ $advance_salaries->currentPage() * 10 - 10 + $loop->iteration }}</td>
 
                                     <td>{{ $advance_salary->employee->name }}</td>
                                     <td>{{ Carbon\Carbon::parse($advance_salary->date)->format('M/Y') }}</td>
