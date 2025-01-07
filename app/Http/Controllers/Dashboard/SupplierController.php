@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Http;
 
 class SupplierController extends Controller
 {
@@ -32,8 +33,20 @@ class SupplierController extends Controller
      */
     public function create()
     {
-        return view('suppliers.create', [
-        ]);
+
+        $response = Http::get('https://api.rajaongkir.com/starter/city?key=0e04521cdc63993d453013d53d7f17d0');
+
+        $data = $response->json();
+
+
+        // dd($data['rajaongkir']['results']);
+        // if ($response->successful()) {
+
+        //     // Process the data here
+        // } else {
+        //     // Handle the error case
+        // }
+        return view('suppliers.create', ['data' => $data['rajaongkir']['results']]);
     }
 
     /**
@@ -55,14 +68,15 @@ class SupplierController extends Controller
             'city' => 'required|string|max:50',
             'address' => 'required|string|max:100',
         ];
+        // dd($r)
 
         $validatedData = $request->validate($rules);
-
+        // dd($validatedData);
         /**
          * Handle upload image with Storage.
          */
         if ($file = $request->file('photo')) {
-            $fileName = hexdec(uniqid()).'.'.$file->getClientOriginalExtension();
+            $fileName = hexdec(uniqid()) . '.' . $file->getClientOriginalExtension();
             $path = 'public/suppliers/';
 
             $file->storeAs($path, $fileName);
@@ -102,8 +116,8 @@ class SupplierController extends Controller
         $rules = [
             'photo' => 'image|file|max:1024',
             'name' => 'required|string|max:50',
-            'email' => 'required|email|max:50|unique:suppliers,email,'.$supplier->id,
-            'phone' => 'required|string|max:15|unique:suppliers,phone,'.$supplier->id,
+            'email' => 'required|email|max:50|unique:suppliers,email,' . $supplier->id,
+            'phone' => 'required|string|max:15|unique:suppliers,phone,' . $supplier->id,
             'shopname' => 'required|string|max:50',
             'type' => 'required|string|max:25',
             'account_holder' => 'max:50',
@@ -120,13 +134,13 @@ class SupplierController extends Controller
          * Handle upload image with Storage.
          */
         if ($file = $request->file('photo')) {
-            $fileName = hexdec(uniqid()).'.'.$file->getClientOriginalExtension();
+            $fileName = hexdec(uniqid()) . '.' . $file->getClientOriginalExtension();
             $path = 'public/suppliers/';
 
             /**
              * Delete photo if exists.
              */
-            if($supplier->photo){
+            if ($supplier->photo) {
                 Storage::delete($path . $supplier->photo);
             }
 
@@ -147,7 +161,7 @@ class SupplierController extends Controller
         /**
          * Delete photo if exists.
          */
-        if($supplier->photo){
+        if ($supplier->photo) {
             Storage::delete('public/suppliers/' . $supplier->photo);
         }
 

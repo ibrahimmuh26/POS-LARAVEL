@@ -189,7 +189,7 @@ if (jQuery("#apex-column").length) {
     },
     yaxis: {
       title: {
-        text: "$ (thousands)"
+        text: "Rp (thousands)"
       }
     },
     fill: {
@@ -198,7 +198,7 @@ if (jQuery("#apex-column").length) {
     tooltip: {
       y: {
         formatter: function(e) {
-          return "$ " + e + " thousands"
+          return "Rp " + e + " thousands"
         }
       }
     }
@@ -5496,7 +5496,7 @@ if (jQuery("#editor").length) {
         tooltip: {
           y: {
             formatter: function (val) {
-              return "$ " + val + " thousands"
+              return "Rp " + val + " thousands"
             }
           }
         }

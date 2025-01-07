@@ -49,7 +49,7 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-6 text-end mb-50">
-                                    <h4 class="inv-title-1">POS</h4>
+                                    <h4 class="inv-title-1">POS TEL-U</h4>
                                     {{-- <p class="inv-from-1">pos@example.com</p> --}}
                                     <p class="inv-from-2">Surabaya, Jawa Timur</p>
                                 </div>
